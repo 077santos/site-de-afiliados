@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -123,9 +122,21 @@ function carregarProdutos() {
 
 // Função para adicionar produto novo
 function adicionarProduto() {
-  
-  const categoria = document.getElementById("categoria").value.trim() || "Geral";
-  const produto = { nome, imagem, link, selo, descricao, categoria };
+    const nome = document.getElementById("nome").value.trim();
+    const imagem = document.getElementById("imagem").value.trim();
+    const link = document.getElementById("link").value.trim();
+    const selo = document.getElementById("selo").value.trim() || "🔥 OFERTA";
+    const descricao = document.getElementById("descricao").value.trim() || "Aproveite a oferta!";
+    const categoria = document.getElementById("categoria").value.trim() || "Geral";
+
+    if (!nome || !imagem || !link) {
+        alert("Preencha os campos obrigatórios: Nome, Imagem e Link!");
+        return;
+    }
+
+    const container = document.getElementById("lista-produtos");
+
+    const produto = { nome, imagem, link, selo, descricao, categoria };
 
     // Adiciona visualmente
     container.prepend(criarProdutoHTML(produto));
@@ -142,7 +153,6 @@ function adicionarProduto() {
     document.getElementById("selo").value = "";
     document.getElementById("descricao").value = "";
     document.getElementById("categoria").value = "";
-
 }
 
 // Carrega produtos salvos ao iniciar
