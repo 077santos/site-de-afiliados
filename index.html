@@ -1,0 +1,168 @@
+
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Ofertas Imperdíveis | Promoções com Descontos Hoje</title>
+    <meta name="description" content="Confira ofertas imperdíveis com descontos reais em produtos populares. Promoções atualizadas todos os dias. Aproveite agora!">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>🔥 Ofertas Imperdíveis</h1>
+    <p>Os melhores produtos com os melhores preços</p>
+</header>
+
+<section class="seo-text">
+    <p>
+        Encontre aqui ofertas imperdíveis em mochilas, eletrônicos, utensílios domésticos
+        e produtos populares com descontos especiais. Trabalhamos com links de afiliados
+        para garantir os melhores preços atualizados.
+    </p>
+</section>
+<section class="filtros">
+    <button onclick="filtrarProdutos('Todos')">Todos</button>
+    <button onclick="filtrarProdutos('Eletrônicos')">Eletrônicos</button>
+    <button onclick="filtrarProdutos('Mochilas')">Mochilas</button>
+    <button onclick="filtrarProdutos('Utensílios')">Utensílios</button>
+</section>
+
+<!-- GRID DE PRODUTOS -->
+<main class="produtos" id="lista-produtos">
+
+    <!-- SEUS PRODUTOS FIXOS (mantidos) -->
+    <div class="produto">
+        <img src="https://down-br.img.susercontent.com/file/cn-11134207-7r98o-lwmnsjet29lv6f.webp" alt="Fone de ouvido sem fio" loading="lazy">
+        <span class="selo">🔥 OFERTA</span>
+        <h2>Fone de ouvido sem fio</h2>
+        <p>Aproveite a oferta!</p>
+        <a href="https://s.shopee.com.br/gK0I10Cvt" target="_blank" class="btn">🔥 Ver Oferta</a>
+    </div>
+
+    <!-- (os outros produtos continuam exatamente como estavam) -->
+
+</main>
+
+<!-- PAINEL ADMIN -->
+<section class="admin">
+    <h2>Administração</h2>
+
+    <!-- FORMULARIO DE LOGIN -->
+    <div id="login-admin">
+        <input type="password" id="senha-admin" placeholder="Digite a senha">
+        <button onclick="verificarSenha()">Entrar</button>
+    </div>
+
+    <!-- FORMULARIO DE ADICIONAR PRODUTO (inicialmente escondido) -->
+    <div id="painel-produto" style="display:none;">
+        <h3>Adicionar Produto (admin)</h3>
+        <input type="text" id="categoria" placeholder="Categoria (ex: Eletrônicos)">
+        <input type="text" id="nome" placeholder="Nome do produto">
+        <input type="text" id="imagem" placeholder="URL da imagem">
+        <input type="text" id="link" placeholder="Link afiliado">
+        <input type="text" id="selo" placeholder="Texto do selo (ex: OFERTA)">
+        <textarea id="descricao" placeholder="Descrição curta"></textarea>
+
+        <button onclick="adicionarProduto()">Adicionar Produto</button>
+    </div>
+</section>
+
+
+<footer>
+    <p>⚠️ Site participante de programas de afiliados</p>
+</footer>
+
+<script>
+const ADMIN_SENHA = "1234"; // senha do admin
+
+function verificarSenha() {
+    const senha = document.getElementById("senha-admin").value.trim();
+
+    if(senha === ADMIN_SENHA) {
+        document.getElementById("login-admin").style.display = "none";
+        document.getElementById("painel-produto").style.display = "block";
+    } else {
+        alert("Senha incorreta!");
+    }
+}
+
+// Função para criar o elemento HTML do produto
+function criarProdutoHTML(produto) {
+    const div = document.createElement("div");
+    div.className = "produto";
+    div.dataset.categoria = produto.categoria; // <-- aqui
+    div.innerHTML = `
+        <img src="${produto.imagem}" alt="${produto.nome}" loading="lazy">
+        <span class="selo">${produto.selo}</span>
+        <h2>${produto.nome}</h2>
+        <p>${produto.descricao}</p>
+        <a href="${produto.link}" target="_blank" class="btn">🔥 Ver Oferta</a>
+    `;
+    return div;
+}
+
+
+// Função para salvar produtos no localStorage
+function salvarProdutos(produtos) {
+    localStorage.setItem("produtos", JSON.stringify(produtos));
+}
+
+// Função para carregar produtos do localStorage
+function carregarProdutos() {
+    const container = document.getElementById("lista-produtos");
+    const produtos = JSON.parse(localStorage.getItem("produtos")) || [];
+
+    produtos.forEach(produto => {
+        const div = criarProdutoHTML(produto);
+        container.appendChild(div);
+    });
+}
+
+// Função para adicionar produto novo
+function adicionarProduto() {
+  
+  const categoria = document.getElementById("categoria").value.trim() || "Geral";
+  const produto = { nome, imagem, link, selo, descricao, categoria };
+
+    // Adiciona visualmente
+    container.prepend(criarProdutoHTML(produto));
+
+    // Salva no localStorage
+    const produtosSalvos = JSON.parse(localStorage.getItem("produtos")) || [];
+    produtosSalvos.unshift(produto); // adiciona no começo
+    salvarProdutos(produtosSalvos);
+
+    // Limpa formulário
+    document.getElementById("nome").value = "";
+    document.getElementById("imagem").value = "";
+    document.getElementById("link").value = "";
+    document.getElementById("selo").value = "";
+    document.getElementById("descricao").value = "";
+    document.getElementById("categoria").value = "";
+
+}
+
+// Carrega produtos salvos ao iniciar
+window.addEventListener("DOMContentLoaded", carregarProdutos);
+
+function filtrarProdutos(categoria) {
+    const container = document.getElementById("lista-produtos");
+    const produtos = container.children;
+
+    for(let produto of produtos) {
+        if(categoria === "Todos" || produto.dataset.categoria === categoria) {
+            produto.style.display = "block";
+        } else {
+            produto.style.display = "none";
+        }
+    }
+}
+
+</script>
+
+
+</body>
+</html>
